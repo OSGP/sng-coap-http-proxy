@@ -60,19 +60,3 @@ testing {
     }
 }
 
-spotless {
-    // optional: limit format enforcement to just the files changed by this feature branch
-    // ratchetFrom("origin/main")
-
-    kotlin {
-        // by default the target is every '.kt' and '.kts` file in the java sourcesets
-        ktfmt()    // has its own section below
-        licenseHeader(
-            """
-            // SPDX-FileCopyrightText: Contributors to the GXF project
-            //
-            // SPDX-License-Identifier: Apache-2.0
-        """.trimIndent(), "package "
-        )
-    }
-}
