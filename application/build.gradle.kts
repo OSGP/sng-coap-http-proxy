@@ -4,6 +4,7 @@
 
 plugins {
     id("org.springframework.boot")
+    id("com.diffplug.spotless") version "6.25.0"
 }
 
 dependencies {
@@ -59,3 +60,4 @@ testing {
         }
     }
 }
+
