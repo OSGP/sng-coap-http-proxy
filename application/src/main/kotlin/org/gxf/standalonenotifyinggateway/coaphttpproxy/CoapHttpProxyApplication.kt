@@ -7,10 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
-@Suppress("WRONG_INDENTATION")
 @SpringBootApplication
 @ConfigurationPropertiesScan
- class CoapHttpProxyApplication
+class CoapHttpProxyApplication
 
 fun main(args: Array<String>) {
     runApplication<CoapHttpProxyApplication>(*args)
