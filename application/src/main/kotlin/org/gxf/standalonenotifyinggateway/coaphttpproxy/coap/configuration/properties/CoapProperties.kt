@@ -3,10 +3,22 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.configuration.properties
 
-import java.time.Duration
 import org.eclipse.californium.scandium.dtls.cipher.CipherSuite
 import org.springframework.boot.context.properties.ConfigurationProperties
 
+import java.time.Duration
+
+/**
+ * @property coapsPort
+ * @property path
+ * @property deduplicator
+ * @property maxActivePeers
+ * @property maxMessageSize
+ * @property maxPeerInactivityPeriod
+ * @property maxResourceBodySize
+ * @property preferredBlockSize
+ * @property cipherSuites
+ */
 @ConfigurationProperties(prefix = "config.coap")
 class CoapProperties(
     val coapsPort: Int,

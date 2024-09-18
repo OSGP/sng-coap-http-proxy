@@ -5,4 +5,8 @@ package org.gxf.standalonenotifyinggateway.coaphttpproxy.domain
 
 import com.fasterxml.jackson.databind.JsonNode
 
+/**
+ * @property deviceId
+ * @property payload
+ */
 data class Message(val deviceId: String, val payload: JsonNode)

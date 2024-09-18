@@ -6,6 +6,9 @@ package org.gxf.standalonenotifyinggateway.coaphttpproxy.logging
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 
+/**
+ * @param remoteLoggingWebClient
+ */
 @Component
 class RemoteLogger(private val remoteLoggingWebClient: RemoteLoggingWebClient) {
     private val logger = KotlinLogging.logger {}
@@ -21,7 +24,8 @@ class RemoteLogger(private val remoteLoggingWebClient: RemoteLoggingWebClient) {
     ) {
         logger.error(exception, msg)
         remoteLoggingWebClient.remoteLogMessage(
-            "Unknown error occurred with $msg, exception message: ${exception.message} and stacktrace: ${exception.stackTrace}",
+            "Unknown error occurred with $msg, " +
+                    "exception message: ${exception.message} and stacktrace: ${exception.stackTrace}",
         )
     }
 }

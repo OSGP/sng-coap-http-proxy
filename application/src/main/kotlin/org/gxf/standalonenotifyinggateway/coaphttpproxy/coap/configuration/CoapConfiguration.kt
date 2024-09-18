@@ -3,8 +3,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.configuration
 
-import java.net.InetSocketAddress
-import java.util.concurrent.TimeUnit
+import org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.configuration.properties.CoapProperties
+import org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.configuration.properties.UdpProperties
+
 import org.eclipse.californium.core.config.CoapConfig
 import org.eclipse.californium.core.network.CoapEndpoint
 import org.eclipse.californium.elements.config.CertificateAuthenticationMode
@@ -20,17 +21,21 @@ import org.eclipse.californium.scandium.config.DtlsConnectorConfig
 import org.eclipse.californium.scandium.dtls.cipher.CipherSuite.TLS_PSK_WITH_AES_128_CBC_SHA256
 import org.eclipse.californium.scandium.dtls.cipher.CipherSuite.TLS_PSK_WITH_AES_128_GCM_SHA256
 import org.eclipse.californium.scandium.dtls.pskstore.AdvancedPskStore
-import org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.configuration.properties.CoapProperties
-import org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.configuration.properties.UdpProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration as SpringConfiguration
 
+import java.net.InetSocketAddress
+import java.util.concurrent.TimeUnit
+
+/**
+ * @param coapProps
+ * @param udpProps
+ */
 @SpringConfiguration
 class CoapConfiguration(
     private val coapProps: CoapProperties,
     private val udpProps: UdpProperties
 ) {
-
     init {
         DtlsConfig.register()
         CoapConfig.register()
@@ -83,7 +88,10 @@ class CoapConfiguration(
 
     @Bean
     fun coapEndpoint(config: CaliforniumConfiguration, dtlsConnector: DTLSConnector): CoapEndpoint =
-        CoapEndpoint.Builder().setConfiguration(config).setConnector(dtlsConnector).build()
+        CoapEndpoint.Builder()
+            .setConfiguration(config)
+            .setConnector(dtlsConnector)
+            .build()
 
     @Bean
     fun dtlsConnector(config: CaliforniumConfiguration, remotePskStore: AdvancedPskStore) =

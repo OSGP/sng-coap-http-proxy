@@ -3,18 +3,24 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.gxf.standalonenotifyinggateway.coaphttpproxy.coap
 
-import com.fasterxml.jackson.dataformat.cbor.databind.CBORMapper
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.exception.InvalidMessageException
 import org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.validation.MessageValidator
 import org.gxf.standalonenotifyinggateway.coaphttpproxy.domain.Message
 import org.gxf.standalonenotifyinggateway.coaphttpproxy.http.HttpClient
 import org.gxf.standalonenotifyinggateway.coaphttpproxy.logging.RemoteLogger
+
+import com.fasterxml.jackson.dataformat.cbor.databind.CBORMapper
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 
+/**
+ * @param httpClient
+ * @param messageValidator
+ * @param remoteLogger
+ */
 @Service
 class MessageHandler(
     private val httpClient: HttpClient,

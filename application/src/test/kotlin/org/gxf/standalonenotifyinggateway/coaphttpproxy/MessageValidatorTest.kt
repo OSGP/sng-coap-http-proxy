@@ -3,10 +3,11 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.gxf.standalonenotifyinggateway.coaphttpproxy
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.assertj.core.api.Assertions.assertThat
 import org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.validation.MessageValidator
 import org.gxf.standalonenotifyinggateway.coaphttpproxy.domain.Message
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class MessageValidatorTest {

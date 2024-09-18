@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 class MessageValidator {
     fun isValid(message: Message): Boolean {
         val idValue = message.payload.findValue("ID")
-        if (idValue != null) {
+        idValue?.let {
             val payloadId = idValue.asText()
             return message.deviceId == payloadId
         }

@@ -7,6 +7,9 @@ import org.gxf.standalonenotifyinggateway.coaphttpproxy.http.HttpClient
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 
+/**
+ * @param webClient
+ */
 @Component
 class RemoteLoggingWebClient(private val webClient: RestClient) {
     fun remoteLogMessage(message: String) {
@@ -14,6 +17,9 @@ class RemoteLoggingWebClient(private val webClient: RestClient) {
     }
 
     private fun executeErrorRequest(body: String) {
-        webClient.post().uri(HttpClient.ERROR_PATH).body(body).retrieve()
+        webClient.post()
+            .uri(HttpClient.ERROR_PATH)
+            .body(body)
+            .retrieve()
     }
 }

@@ -3,6 +3,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.gxf.standalonenotifyinggateway.coaphttpproxy
 
+import org.gxf.standalonenotifyinggateway.coaphttpproxy.configuration.PskStubProperties
+import org.gxf.standalonenotifyinggateway.coaphttpproxy.http.HttpClient
+import org.gxf.standalonenotifyinggateway.coaphttpproxy.http.configuration.properties.HttpProperties
+
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -17,16 +21,11 @@ import com.github.tomakehurst.wiremock.client.WireMock.serverError
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathTemplate
 import com.github.tomakehurst.wiremock.http.Fault
-import java.net.URI
-import java.time.Duration
 import org.assertj.core.api.Assertions.assertThat
 import org.awaitility.Awaitility
 import org.eclipse.californium.core.coap.CoAP
 import org.eclipse.californium.core.coap.MediaTypeRegistry
 import org.eclipse.californium.core.coap.Request
-import org.gxf.standalonenotifyinggateway.coaphttpproxy.configuration.PskStubProperties
-import org.gxf.standalonenotifyinggateway.coaphttpproxy.http.HttpClient
-import org.gxf.standalonenotifyinggateway.coaphttpproxy.http.configuration.properties.HttpProperties
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,18 +34,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 
+import java.net.URI
+import java.time.Duration
+
 @Import(IntegrationTestCoapClient::class)
 @EnableConfigurationProperties(PskStubProperties::class, HttpProperties::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class IntegrationTest {
-    @Autowired private lateinit var coapClient: IntegrationTestCoapClient
-
-    @Autowired private lateinit var pskStubProperties: PskStubProperties
-
-    @Autowired private lateinit var httpProperties: HttpProperties
-
-    private lateinit var wiremock: WireMockServer
-
     private val wiremockStubOk =
         post(urlPathTemplate("${HttpClient.MESSAGE_PATH}/{id}")).willReturn(ok("0"))
     private val wiremockStubError =
@@ -55,7 +49,17 @@ class IntegrationTest {
     private val wiremockStubInternalServerError =
         post(urlPathTemplate("${HttpClient.MESSAGE_PATH}/{id}")).willReturn(serverError())
     private val wiremockStubErrorEndpoint =
-        post(urlPathTemplate(HttpClient.ERROR_PATH)).willReturn(aResponse().withStatus(200))
+        post(urlPathTemplate(HttpClient.ERROR_PATH)).willReturn(aResponse().withStatus(STATUS_OK))
+
+    @Autowired
+    private lateinit var coapClient: IntegrationTestCoapClient
+
+    @Autowired
+    private lateinit var pskStubProperties: PskStubProperties
+
+    @Autowired
+    private lateinit var httpProperties: HttpProperties
+    private lateinit var wiremock: WireMockServer
     private lateinit var jsonNode: JsonNode
 
     @BeforeEach
@@ -63,21 +67,24 @@ class IntegrationTest {
         val wiremockStubPsk =
             get(urlPathTemplate(HttpClient.PSK_PATH)).willReturn(ok(pskStubProperties.defaultKey))
 
+        val downlink = "!PSK:umU6KJ4g7Ye5ZU6o:4a3cfdd487298e2f048ebfd703a1da4800c18f2167b62192cf7dc9fd6cc4bcd3;" +
+                "PSK:umU6KJ4g7Ye5ZU6o:4a3cfdd487298e2f048ebfd703a1da4800c18f2167b62192cf7dc9fd6cc4bcd3:SET"
+
         jsonNode =
-            ObjectMapper()
-                .readTree(
-                    """ 
+                ObjectMapper()
+                    .readTree(
+                        """
             {
                 "ID": "${pskStubProperties.defaultId}",
                 "URC": [
                     "PSK:SET",
                     {
-                        "DL": "!PSK:umU6KJ4g7Ye5ZU6o:4a3cfdd487298e2f048ebfd703a1da4800c18f2167b62192cf7dc9fd6cc4bcd3;PSK:umU6KJ4g7Ye5ZU6o:4a3cfdd487298e2f048ebfd703a1da4800c18f2167b62192cf7dc9fd6cc4bcd3:SET"
+                        "DL": "$downlink"
                     }
                 ]
             }
             """,
-                )
+                    )
 
         val url = URI(httpProperties.url).toURL()
         wiremock = WireMockServer(url.port)
@@ -190,5 +197,9 @@ class IntegrationTest {
         return Request.newPost()
             .apply { options.setContentFormat(MediaTypeRegistry.APPLICATION_CBOR) }
             .setPayload(payload)
+    }
+
+    companion object {
+        private const val STATUS_OK = 200
     }
 }

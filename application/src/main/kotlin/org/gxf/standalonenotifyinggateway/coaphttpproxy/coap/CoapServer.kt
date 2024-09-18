@@ -9,14 +9,18 @@ import org.eclipse.californium.core.network.CoapEndpoint
 import org.eclipse.californium.elements.config.Configuration
 import org.springframework.stereotype.Component
 
+/**
+ * @param config
+ * @param coapResource
+ * @param coapEndpoint
+ */
 @Component
-class CoapServer(
-    config: Configuration,
+data class CoapServer(
+    private val config: Configuration,
     private val coapResource: CoapResource,
     private val coapEndpoint: CoapEndpoint,
 ) {
     private val logger = KotlinLogging.logger {}
-
     private val californiumCoapServer = CaliforniumCoapServer(config)
 
     init {

@@ -3,8 +3,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.configuration.psk
 
-import java.net.InetSocketAddress
-import javax.crypto.SecretKey
+import org.gxf.standalonenotifyinggateway.coaphttpproxy.http.HttpClient.Companion.PSK_PATH
+import org.gxf.standalonenotifyinggateway.coaphttpproxy.logging.RemoteLogger
+
 import org.eclipse.californium.scandium.dtls.ConnectionId
 import org.eclipse.californium.scandium.dtls.HandshakeResultHandler
 import org.eclipse.californium.scandium.dtls.PskPublicInformation
@@ -12,18 +13,21 @@ import org.eclipse.californium.scandium.dtls.PskSecretResult
 import org.eclipse.californium.scandium.dtls.pskstore.AdvancedPskStore
 import org.eclipse.californium.scandium.util.SecretUtil
 import org.eclipse.californium.scandium.util.ServerNames
-import org.gxf.standalonenotifyinggateway.coaphttpproxy.http.HttpClient.Companion.PSK_PATH
-import org.gxf.standalonenotifyinggateway.coaphttpproxy.logging.RemoteLogger
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 
+import java.net.InetSocketAddress
+import javax.crypto.SecretKey
+
+/**
+ * @param webClient
+ * @param remoteLogger
+ */
 @Component
 class RemotePskStore(private val webClient: RestClient, private val remoteLogger: RemoteLogger) :
     AdvancedPskStore {
-    override fun hasEcdhePskSupported(): Boolean {
-        return true
-    }
+    override fun hasEcdhePskSupported(): Boolean = true
 
     override fun requestPskSecretResult(
         cid: ConnectionId?,
@@ -33,9 +37,7 @@ class RemotePskStore(private val webClient: RestClient, private val remoteLogger
         otherSecret: SecretKey?,
         seed: ByteArray?,
         useExtendedMasterSecret: Boolean,
-    ): PskSecretResult {
-        return PskSecretResult(cid, identity, getSecretForIdentity(identity.publicInfoAsString))
-    }
+    ): PskSecretResult = PskSecretResult(cid, identity, getSecretForIdentity(identity.publicInfoAsString))
 
     override fun getIdentity(
         peerAddress: InetSocketAddress,
@@ -71,7 +73,7 @@ class RemotePskStore(private val webClient: RestClient, private val remoteLogger
         } catch (e: Exception) {
             remoteLogger.error {
                 "Unknown exception thrown while retrieving the key for $identity, " +
-                    "with exception ${e.message} and stacktrace ${e.stackTrace}"
+                        "with exception ${e.message} and stacktrace ${e.stackTrace}"
             }
             throw e
         }

@@ -12,9 +12,11 @@ import org.springframework.http.MediaType
 import org.springframework.http.client.JdkClientHttpRequestFactory
 import org.springframework.web.client.RestClient
 
+/**
+ * @param httpProps
+ */
 @Configuration
 class WebClientConfiguration(private val httpProps: HttpProperties) {
-
     @Bean
     fun webClient(
         webClientBuilder: RestClient.Builder,
@@ -25,9 +27,10 @@ class WebClientConfiguration(private val httpProps: HttpProperties) {
             .baseUrl(httpProps.url)
             .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .apply {
-                if (httpProps.sslBundle != null) {
-                    it.apply(webClientSsl.fromBundle(httpProps.sslBundle))
+
+            .apply { outer ->
+                httpProps.sslBundle?.let {
+                    outer.apply(webClientSsl.fromBundle(httpProps.sslBundle))
                 }
             }
             .build()

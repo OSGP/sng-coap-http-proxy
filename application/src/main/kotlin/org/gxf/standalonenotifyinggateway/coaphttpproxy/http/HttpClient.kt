@@ -3,9 +3,10 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.gxf.standalonenotifyinggateway.coaphttpproxy.http
 
+import org.gxf.standalonenotifyinggateway.coaphttpproxy.domain.Message
+
 import com.fasterxml.jackson.databind.JsonNode
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.gxf.standalonenotifyinggateway.coaphttpproxy.domain.Message
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
@@ -13,14 +14,11 @@ import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.toEntity
 
+/**
+ * @param webClient
+ */
 @Component
 class HttpClient(private val webClient: RestClient) {
-    companion object {
-        const val ERROR_PATH = "/error"
-        const val MESSAGE_PATH = "/sng"
-        const val PSK_PATH = "/psk"
-    }
-
     private val logger = KotlinLogging.logger {}
 
     @Throws(HttpClientErrorException::class, HttpServerErrorException::class)
@@ -48,5 +46,14 @@ class HttpClient(private val webClient: RestClient) {
         id: String,
         body: String,
     ): ResponseEntity<String> =
-        webClient.post().uri("$MESSAGE_PATH/$id").body(body).retrieve().toEntity<String>()
+        webClient.post()
+            .uri("$MESSAGE_PATH/$id")
+            .body(body)
+            .retrieve()
+            .toEntity<String>()
+    companion object {
+        const val ERROR_PATH = "/error"
+        const val MESSAGE_PATH = "/sng"
+        const val PSK_PATH = "/psk"
+    }
 }
