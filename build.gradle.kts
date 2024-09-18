@@ -6,8 +6,6 @@ import com.diffplug.gradle.spotless.SpotlessExtension
 import io.spring.gradle.dependencymanagement.internal.dsl.StandardDependencyManagementExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-// import com.saveourtool.diktat.plugin.gradle.DiktatExtension
-// import com.saveourtool.diktat.plugin.gradle.DiktatGradlePlugin
 
 plugins {
     id("org.springframework.boot") version "3.3.3" apply false
@@ -19,7 +17,6 @@ plugins {
     id("com.diffplug.spotless") version "6.25.0"
     id("org.sonarqube") version "5.1.0.4882"
     id("eclipse")
-    // id("com.saveourtool.diktat") version "2.0.0" apply false
 }
 
 version = System.getenv("GITHUB_REF_NAME")?.replace("/", "-")?.lowercase() ?: "develop"
@@ -31,27 +28,6 @@ sonar {
         property("sonar.organization", "gxf")
     }
 }
-
-// allprojects {
-//     repositories {
-//         mavenLocal()
-//         mavenCentral()
-//     }
-//     apply<DiktatGradlePlugin>()
-
-//     extensions.configure<DiktatExtension> {
-//         diktatConfigFile = rootProject.file("diktat-analysis.yml")
-//         inputs { include("src/**/.*.kt") }
-//         reporters {
-//             plain()
-//             html {
-//                 output = file("diktat-report.html")
-//             }
-//         }
-//         debug = true
-//     }
-
-// }
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
