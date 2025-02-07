@@ -4,18 +4,18 @@
 [versions]
 avro = "1.12.0"
 avro-plugin = "1.9.1"
-californium = "3.8.0"
+californium = "3.13.0"
 commonsCodec = "1.17.2"
 dependency-management = "1.1.7"
 gxf-utils = "2.1.2"
 kotlin = "2.1.0"
 kotlin-logging = "7.0.3"
-mockk = "1.13.14"
+mockk = "1.13.16"
 springmockk = "4.0.2"
 sonarqube = "6.0.1.5171"
-spotless = "7.0.1"
+spotless = "7.0.2"
 spring-boot = "3.3.5"
-wiremock = "3.6.0"
+wiremock = "3.11.0"
 
 [libraries]
 avro = { group = "org.apache.avro", name = "avro", version.ref = "avro" }
