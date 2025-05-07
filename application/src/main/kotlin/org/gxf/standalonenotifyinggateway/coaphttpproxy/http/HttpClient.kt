@@ -28,14 +28,14 @@ class HttpClient(private val webClient: RestClient) {
         val (id, payload) = message
 
         val urc = getUrcFromMessage(payload)
-        logger.debug { "Posting message with id $id, body: $payload and urc $urc" }
+        logger.debug { "Posting message for device with id $id, body: $payload and urc $urc" }
 
         try {
             val response = executeRequest(id, payload.toString())
-            logger.debug { "Posted message with id $id, resulting response: $response" }
+            logger.debug { "Posted message for device with id $id, resulting response: $response" }
             return response
         } catch (e: Exception) {
-            logger.warn { "Error received while posting message with id $id and $urc" }
+            logger.warn { "Error received while posting message for device with id $id and $urc" }
             throw e
         }
     }
