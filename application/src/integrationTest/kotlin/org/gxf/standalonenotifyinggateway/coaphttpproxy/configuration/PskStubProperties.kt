@@ -5,4 +5,5 @@ package org.gxf.standalonenotifyinggateway.coaphttpproxy.configuration
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-@ConfigurationProperties(prefix = "config.psk") class PskStubProperties(val defaultId: String, val defaultKey: String)
+@ConfigurationProperties(prefix = "config.psk")
+class PskStubProperties(val defaultId: String, val defaultKey: String)

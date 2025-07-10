@@ -5,7 +5,6 @@ package org.gxf.standalonenotifyinggateway.coaphttpproxy.coap
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.codec.binary.Hex
-import org.eclipse.californium.core.CoapResource as CaliforniumCoapResource
 import org.eclipse.californium.core.coap.CoAP.ResponseCode
 import org.eclipse.californium.core.server.resources.CoapExchange
 import org.eclipse.californium.elements.util.DatagramWriter
@@ -16,6 +15,7 @@ import org.gxf.standalonenotifyinggateway.coaphttpproxy.logging.RemoteLogger
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
+import org.eclipse.californium.core.CoapResource as CaliforniumCoapResource
 
 @Component
 class CoapResource(

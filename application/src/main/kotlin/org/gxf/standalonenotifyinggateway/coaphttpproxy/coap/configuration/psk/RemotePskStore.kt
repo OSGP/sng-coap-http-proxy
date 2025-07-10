@@ -3,8 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.gxf.standalonenotifyinggateway.coaphttpproxy.coap.configuration.psk
 
-import java.net.InetSocketAddress
-import javax.crypto.SecretKey
 import org.eclipse.californium.scandium.dtls.ConnectionId
 import org.eclipse.californium.scandium.dtls.HandshakeResultHandler
 import org.eclipse.californium.scandium.dtls.PskPublicInformation
@@ -17,12 +15,12 @@ import org.gxf.standalonenotifyinggateway.coaphttpproxy.logging.RemoteLogger
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
+import java.net.InetSocketAddress
+import javax.crypto.SecretKey
 
 @Component
 class RemotePskStore(private val webClient: RestClient, private val remoteLogger: RemoteLogger) : AdvancedPskStore {
-    override fun hasEcdhePskSupported(): Boolean {
-        return true
-    }
+    override fun hasEcdhePskSupported(): Boolean = true
 
     override fun requestPskSecretResult(
         cid: ConnectionId?,
@@ -32,13 +30,10 @@ class RemotePskStore(private val webClient: RestClient, private val remoteLogger
         otherSecret: SecretKey?,
         seed: ByteArray?,
         useExtendedMasterSecret: Boolean,
-    ): PskSecretResult {
-        return PskSecretResult(cid, identity, getSecretForIdentity(identity.publicInfoAsString))
-    }
+    ): PskSecretResult = PskSecretResult(cid, identity, getSecretForIdentity(identity.publicInfoAsString))
 
-    override fun getIdentity(peerAddress: InetSocketAddress, virtualHost: ServerNames?): PskPublicInformation? {
+    override fun getIdentity(peerAddress: InetSocketAddress, virtualHost: ServerNames?): PskPublicInformation? =
         throw NotImplementedError("Method not implemented because it is not used")
-    }
 
     override fun setResultHandler(resultHandler: HandshakeResultHandler?) {
         // Empty implementation because we don't use Async handler

@@ -17,8 +17,6 @@ import com.github.tomakehurst.wiremock.client.WireMock.serverError
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathTemplate
 import com.github.tomakehurst.wiremock.http.Fault
-import java.net.URI
-import java.time.Duration
 import org.assertj.core.api.Assertions.assertThat
 import org.awaitility.Awaitility
 import org.eclipse.californium.core.coap.CoAP
@@ -34,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
+import java.net.URI
+import java.time.Duration
 
 @Import(IntegrationTestCoapClient::class)
 @EnableConfigurationProperties(PskStubProperties::class, HttpProperties::class)
@@ -73,7 +73,7 @@ class IntegrationTest {
                     }
                 ]
             }
-            """
+            """,
                 )
 
         val url = URI(httpProperties.url).toURL()

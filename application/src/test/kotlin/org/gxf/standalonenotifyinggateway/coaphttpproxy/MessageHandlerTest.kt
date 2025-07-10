@@ -25,8 +25,11 @@ import org.springframework.http.ResponseEntity
 @ExtendWith(MockKExtension::class)
 class MessageHandlerTest {
     @MockK private lateinit var httpClient: HttpClient
+
     @MockK private lateinit var messageValidator: MessageValidator
-    @MockK(relaxed = true) private lateinit var remoteLogger: RemoteLogger
+
+    @MockK(relaxed = true)
+    private lateinit var remoteLogger: RemoteLogger
 
     @InjectMockKs private lateinit var messageHandler: MessageHandler
 

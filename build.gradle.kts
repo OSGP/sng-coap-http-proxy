@@ -66,7 +66,10 @@ subprojects {
 
     extensions.configure<SpotlessExtension> {
         kotlin {
-            ktfmt().kotlinlangStyle().configure { it.setMaxWidth(120) }
+            ktlint()
+                .editorConfigOverride(
+                    mapOf("max_line_length" to "120", "ij_kotlin_indent_before_arrow_on_new_line" to true)
+                )
 
             licenseHeaderFile("${project.rootDir}/license-template.kt", "package").updateYearWithLatest(false)
         }
