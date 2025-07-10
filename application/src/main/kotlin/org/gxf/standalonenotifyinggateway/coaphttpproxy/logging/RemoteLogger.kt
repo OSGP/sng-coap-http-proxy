@@ -18,7 +18,7 @@ class RemoteLogger(private val remoteLoggingWebClient: RemoteLoggingWebClient) {
     fun error(exception: Exception, msg: () -> String) {
         logger.error(exception, msg)
         remoteLoggingWebClient.remoteLogMessage(
-            "$msg - exception message: ${exception.message}. See DMZ log for stacktrace."
+            "$msg - exception message: ${exception.message}. See DMZ log for stacktrace.",
         )
     }
 }
